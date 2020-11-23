@@ -141,21 +141,21 @@ def encoder_layer(units, d_model: int, num_heads: int, dropout: float, name: str
 
     Parameters
     ----------
-    units : [type]
-        [description]
-    d_model : [type]
-        [description]
-    num_heads : [type]
-        [description]
-    dropout : [type]
-        [description]
+    units : int
+        number of units in Dense layer
+    d_model : int
+        total depth of q k v matrices
+    num_heads : int
+        number of heads in attention layers
+    dropout : float
+        dropout for regularization
     name : str, optional
-        [description], by default 'encoder_layer'
+        name of an encoder layer, by default 'encoder_layer'
 
     Returns
     -------
-    [type]
-        [description]
+    tf.keras.Model
+        Model object representing encoder block for Transformer, consisting of self-attention, ffn, regularization
     """
 
     inputs = tf.keras.Input(shape=(None, d_model), name='inputs')
@@ -180,6 +180,30 @@ def encoder_layer(units, d_model: int, num_heads: int, dropout: float, name: str
 
 
 def encoder(vocab_size, num_layers, units, d_model, num_heads, dropout, name='encoder'):
+    """Encoder part of the Transformer architecture
+
+    Parameters
+    ----------
+    vocab_size : int
+        Vocabulary size for the embedding layer
+    num_layers : int
+        Number of encoder layers in a Transformer
+    units : int
+        size of Dense layers in encoder blocks
+    d_model : int
+        total depth of q k v matrices in encoder layers
+    num_heads : int
+        number of heads in attention layers
+    dropout : float
+        dropout for regularization
+    name : str, optional
+        name of encoder part, by default 'encoder'
+
+    Returns
+    -------
+    tf.keras.Model
+        tf.keras.Model object, representing encoder part of Transformer
+    """
 
     inputs = tf.keras.Input(shape=(None,), name='inputs')
     padding_mask = tf.keras.Input(shape=(1, 1, None), name='padding_mask')
